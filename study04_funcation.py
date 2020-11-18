@@ -64,12 +64,13 @@ def println(str):  # 必备参数
     print(str)
 
 
-def println(str, num=10):  # 默认参数
-    print(str)
+def println(str, param=0, param2=0):  # 默认参数
+    print("str=%s,param=%s,pram2=%s" % (str, param, param2))
 
 
 println("str")
-println("str", 10)
+println("str", 1)
+println("str", param=1, param2=2)
 
 
 def method(str, *args):  # 可变参数
@@ -113,4 +114,3 @@ def test():
 test()
 print(x)
 '''
-
