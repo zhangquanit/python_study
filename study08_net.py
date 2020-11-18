@@ -44,7 +44,10 @@ payload = {'key1': 'value1',
            'key2': 'value2'
            }
 r = requests.post("http://httpbin.org/post", data=payload)
-print(r.text)
+json_data = r.json()
+url = json_data.get("url")
+print(json_data)
+print("resonse返回的json中的url=%s" % url)
 
 # 以json形式发送post请求
 url = 'http://httpbin.org/post'

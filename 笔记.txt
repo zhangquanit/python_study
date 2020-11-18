@@ -1,9 +1,10 @@
 
-所有标识符可以包括英文、数字以及下划线(_)，但不能以数字开头。
-以下划线开头的标识符是有特殊意义的。
-以单下划线开头 _foo 的代表不能直接访问的类属性，需通过类提供的接口进行访问，不能用 from xxx import * 而导入。
-以双下划线开头的 __foo 代表类的私有成员，以双下划线开头和结尾的 __foo__ 代表 Python 里特殊方法专用的标识，如 __init__() 代表类的构造函数。
+一、单下划线、双下划线、头尾双下划线说明：
+__foo__: 定义的是特殊方法，一般是系统定义名字 ，类似 __init__() 之类的。
+_foo: 以单下划线开头的表示的是 protected 类型的变量，即保护类型只能允许其本身与子类进行访问，不能用于 from module import *
+__foo: 双下划线的表示的是私有类型(private)的变量, 只能是允许这个类本身进行访问了。
 
+二、代码格式
 Python 的代码块不使用大括号 {} 来控制类，函数以及其他逻辑判断。python 最具特色的就是用缩进来写模块。
 缩进的空白数量是可变的，但是所有代码块语句必须包含相同的缩进空白数量，这个必须严格执行。
 if True:
@@ -11,9 +12,21 @@ if True:
 else:
     print ("False")
 
+三、关于True和False
+1、非0的数字为True，0为False
+2、为空的字符串为True，空字符串或None为False
+3、不为空的对象为True。空对象为False
 
-模块
-Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。
+四、__name__
+每个python模块（python文件）都包含内置的变量 __name__，表示当前模块的名字(文件名)
+“__main__” 始终指当前执行模块的名称，当模块被直接执行时，__name__ == '__main__'
+
+if __name__ == '__main__':  # 如果当前模块被执行
+    argv = sys.argv[1:]  # 获取参数
+
+
+五、模块
+Python 模块(Module)，是一个 Python 文件。
 1、模块的引入
 import module1[, module2[,... moduleN]]
 调用模块中的函数：
@@ -42,13 +55,57 @@ from fib import fibonacci
 把一个模块的所有内容全都导入到当前的命名空间也是可行的
 from modname import *
 
+六、命令行参数
+参考：https://www.cnblogs.com/zz22--/p/7719285.html
+使用sys模块可以得到命令行参数。
+import sys
+然后在命令行下敲入任意的参数，如：
+python get.py -o t --help cmd file1 file2
+结果为：
+['get.py', '-o', 't', '--help', 'cmd', 'file1', 'file2']
+可见，所有命令行参数以空格为分隔符，都保存在了sys.argv列表中。其中第1个为脚本的文件名。
 
+选项的写法要求
+1、对于短格式，"-"号后面要紧跟一个选项字母。如果还有此选项的附加参数，可以用空格分开，也可以不分开。长度任意，可以用引号。如以下是正确的：
+-o
+-oa
+-obbbb
+-o bbbb
+-o "a b"
 
+2、对于长格式，"--"号后面要跟一个单词。如果还有些选项的附加参数，后面要紧跟"="，再加上参数。"="号前后不能有空格。如以下是正确的：
+--help=file1
+而这些是不正确的：
+-- help=file1
+--help =file1
+--help = file1
+--help= file1
 
+3、使用getopt模块分析命令行参数
+import getopt, sys
 
+opts, args = getopt.getopt(sys.argv[1:], "ho:", ["help", "output="]) #"ho:"也可以写成'-h-o:'
+1）使用sys.argv[1:]过滤掉第一个参数（它是执行脚本的名字，不应算作参数的一部分）。
+2）使用短格式分析串"ho:"。当一个选项只是表示开关状态时，即后面不带附加参数时，在分析串中写入选项字符。当选项后面是带一个附加参数时，在分析串中写入选项字符同时后面加一个":"号。所以"ho:"就表示"h"是一个开关选项；"o:"则表示后面应该带一个参数。
+3）使用长格式分析串列表：["help", "output="]。长格式串也可以有开关状态，即后面不跟"="号。如果跟一个等号则表示后面还应有一个参数。这个长格式表示"help"是一个开关选项；"output="则表示后面应该带一个参数。
+4）调用getopt函数。函数返回两个列表：opts和args。
+opts为分析出的格式信息。args为不属于格式信息的剩余的命令行参数,即不是按照getopt(）里面定义的长或短选项字符和附加参数以外的信息。
+opts是一个两元组的列表。每个元素为：(选项串,附加参数)。如果没有附加参数则为空串''。
 
+用上面解释的一个命令行例子运行：
 
+python test1.py '-h -o file --help --output=out file1 file2'
 
+opts的输出结果为：
+[('-h', ''), ('-o', 'file'), ('--help', ''), ('--output', 'out')]
+而args则为：['file1', 'file2']，这就是上面不属于格式信息的剩余的命令行参数。
+
+for o, a in opts:
+    if o in ("-h", "--help"):
+        usage()
+        sys.exit()
+    if o in ("-o", "--output"):
+        output = a
 
 
 
