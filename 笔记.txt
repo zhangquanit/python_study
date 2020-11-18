@@ -1,0 +1,63 @@
+
+所有标识符可以包括英文、数字以及下划线(_)，但不能以数字开头。
+以下划线开头的标识符是有特殊意义的。
+以单下划线开头 _foo 的代表不能直接访问的类属性，需通过类提供的接口进行访问，不能用 from xxx import * 而导入。
+以双下划线开头的 __foo 代表类的私有成员，以双下划线开头和结尾的 __foo__ 代表 Python 里特殊方法专用的标识，如 __init__() 代表类的构造函数。
+
+Python 的代码块不使用大括号 {} 来控制类，函数以及其他逻辑判断。python 最具特色的就是用缩进来写模块。
+缩进的空白数量是可变的，但是所有代码块语句必须包含相同的缩进空白数量，这个必须严格执行。
+if True:
+    print ("True")
+else:
+    print ("False")
+
+
+模块
+Python 模块(Module)，是一个 Python 文件，以 .py 结尾，包含了 Python 对象定义和Python语句。
+1、模块的引入
+import module1[, module2[,... moduleN]]
+调用模块中的函数：
+   模块名.函数名
+
+一个模块只会被导入一次，不管你执行了多少次import。
+比如support.py模块：
+def println( par ):
+   print "Hello : ", par
+   return
+
+# 导入模块
+import support
+# 现在可以调用模块里包含的函数了
+support.println("Runoob")
+
+2、from…import 语句
+Python 的 from 语句让你从模块中导入一个指定的部分到当前命名空间中。语法如下：
+from modname import name1[, name2[, ... nameN]]
+
+例如，要导入模块 fib 的 fibonacci 函数，使用如下语句：
+from fib import fibonacci
+这个声明不会把整个 fib 模块导入到当前的命名空间中，它只会将 fib 里的 fibonacci 单个引入到执行这个声明的模块的全局符号表。
+
+3、from…import* 语句
+把一个模块的所有内容全都导入到当前的命名空间也是可行的
+from modname import *
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
